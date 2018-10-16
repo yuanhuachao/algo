@@ -56,10 +56,10 @@ struct linkedList<T> {
         var nodeNew: Node<Int>?
         
         if ((node1?.data)! > (node2?.data)!) {
-            nodeNew = node2
+            nodeNew = node2?.copy() as? Node<Int>
             node2 = node2?.next
         } else {
-            nodeNew = node1
+            nodeNew = node1?.copy() as? Node<Int>
             node1 = node1?.next
         }
         
@@ -69,11 +69,11 @@ struct linkedList<T> {
             
             if ((node1?.data)! > (node2?.data)!) {
                 
-                nodeNew?.next = node2
+                nodeNew?.next = node2?.copy() as? Node<Int>
                 node2 = node2?.next
             } else {
                 
-                nodeNew?.next = node1
+                nodeNew?.next = node1?.copy() as? Node<Int>
                 node1 = node1?.next
             }
             
@@ -81,9 +81,9 @@ struct linkedList<T> {
         }
         
         if (node1 == nil) {
-            nodeNew?.next = node2
+            nodeNew?.next = node2?.copy() as? Node<Int>
         } else if (node2 == nil) {
-            nodeNew?.next = node1
+            nodeNew?.next = node1?.copy() as? Node<Int>
         }
         
         return head
@@ -95,18 +95,18 @@ struct linkedList<T> {
         var headNew: Node<Int>?
         
         if head1 == nil {
-            return head2
+            return head2?.copy() as? Node<Int>
         }
         if head2 == nil {
-            return head1
+            return head1?.copy() as? Node<Int>
         }
         
         if ((head1?.data)! <= (head2?.data)!) {
             headNew = head1
-            headNew?.next = combineOrderedList2(head1: head1?.next, head2: head2)
+            headNew?.next = combineOrderedList2(head1: head1?.next, head2: head2)?.copy() as? Node<Int>
         } else {
             headNew = head2
-            headNew?.next = combineOrderedList2(head1: head1, head2: head2?.next)
+            headNew?.next = combineOrderedList2(head1: head1, head2: head2?.next)?.copy() as? Node<Int>
         }
         
         return headNew
@@ -114,7 +114,9 @@ struct linkedList<T> {
     
 }
 
-final class Node<T> {
+final class Node<T>: NSMutableCopying, NSCopying {
+    
+    
     
     var data: T
     var next: Node<T>?
@@ -124,8 +126,13 @@ final class Node<T> {
         self.next = next
     }
     
-    func copy(with zone: NSZone? = nil) -> Node<T> {
-        let node = Node(data: self.data, next: self.next)
+    func mutableCopy(with zone: NSZone? = nil) -> Any {
+        let node = Node(data: self.data, next: self.next?.mutableCopy() as? Node<T>)
+        return node
+    }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        let node = Node(data: self.data, next: self.next?.copy() as? Node<T>)
         return node
     }
 }
