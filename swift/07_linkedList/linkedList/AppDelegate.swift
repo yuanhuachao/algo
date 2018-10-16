@@ -19,21 +19,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let head = Node(data: 0)
         let head1 = Node(data: 1)
-        let head2 = Node(data: 2)
-        let head3 = Node(data: 3)
-        let head4 = Node(data: 4)
-        let head5 = Node(data: 5)
+        let head2 = Node(data: 4)
+        let head3 = Node(data: 5)
+        let head4 = Node(data: 8)
+        let head5 = Node(data: 14)
         head.next = head1
         head1.next = head2
         head2.next = head3
         head3.next = head4
         head4.next = head5
-        var list1 = linkedList(head: head)
-        let list = list1.reverseLinkedList(head: head)
-        var node = list.head
-        while node.next != nil {
-            print(node.next?.data)
-            node = node.next!
+        
+        
+        let heade = Node(data: 0)
+        let heade1 = Node(data: 2)
+        let heade2 = Node(data: 2)
+//        let heade3 = Node(data: 9)
+//        let heade4 = Node(data: 11)
+//        let heade5 = Node(data: 14)
+        heade.next = heade1
+        heade1.next = heade2
+//        heade2.next = heade3
+//        heade3.next = heade4
+//        heade4.next = heade5
+        
+//        let list1 = linkedList(head: head)
+//        let list2 = linkedList(head: heade)
+        
+//        var node = linkedList<Int>.combineOrderedList(head1: head, head2: heade)
+        var node = linkedList<Int>.combineOrderedList2(head1: head, head2: heade)
+//        let list = list1.reverseLinkedList(head: head)
+//        var node = list.head
+        while node?.next != nil {
+            print(node?.next?.data ?? -100)
+            node = node?.next!
         }
         
         
