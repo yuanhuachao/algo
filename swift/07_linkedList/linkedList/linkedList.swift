@@ -37,11 +37,20 @@ struct linkedList<T> {
         return linkedList(head: newHead)
     }
     
-    //detection loop in linkedList
+    //detection loop in linkedList    TODO: find lengths of linkedList and loop
     func detectionLoop(head: Node<T>) ->Bool {
         
+        var fastPointer: Node<T>? = head.next?.next
+        var slowPointer: Node<T>? = head.next
         
-        
+        while (fastPointer != nil && slowPointer != nil) {
+            if (ObjectIdentifier(fastPointer!) == ObjectIdentifier(slowPointer!)) {
+                return true
+            }
+            
+            fastPointer = fastPointer?.next?.next
+            slowPointer = slowPointer?.next
+        }
         
         return false
     }
@@ -110,6 +119,32 @@ struct linkedList<T> {
         }
         
         return headNew
+    }
+    
+    
+    func deleteNodeBackwards(head: Node<T>, backwardsIndex: Int) ->Node<T> {
+        var front: Node<T>? = head
+        var later: Node<T>? = head
+        
+        for _ in 0 ..< backwardsIndex {
+            
+            front = front?.next
+            
+            guard let _ = front else {
+                return head
+            }
+        }
+
+        while front?.next != nil {
+            front = front?.next
+            later = later?.next
+        }
+        
+        let temp:Node<T> = (later?.next)!
+        
+        later?.next = later?.next?.next
+        
+        return temp
     }
     
 }

@@ -33,28 +33,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let heade = Node(data: 0)
         let heade1 = Node(data: 2)
         let heade2 = Node(data: 2)
-//        let heade3 = Node(data: 9)
-//        let heade4 = Node(data: 11)
+        let heade3 = Node(data: 9)
+        let heade4 = Node(data: 11)
 //        let heade5 = Node(data: 14)
-        heade.next = heade1
-        heade1.next = heade2
-//        heade2.next = heade3
-//        heade3.next = heade4
-//        heade4.next = heade5
+        heade.next = head1
+        heade1.next = head
+        heade2.next = heade3
+        heade3.next = heade4
+        heade4.next = nil
         
 //        let list1 = linkedList(head: head)
 //        let list2 = linkedList(head: heade)
         
 //        var node = linkedList<Int>.combineOrderedList(head1: head, head2: heade)
-        var node = linkedList<Int>.combineOrderedList2(head1: head, head2: heade)
+//        var node = linkedList<Int>.combineOrderedList2(head1: head, head2: heade)
 //        let list = list1.reverseLinkedList(head: head)
 //        var node = list.head
-        while node?.next != nil {
-            print(node?.next?.data ?? -100)
-            node = node?.next!
-        }
+//        while node?.next != nil {
+//            print(node?.next?.data ?? -100)
+//            node = node?.next!
+//        }
         
+        let list = linkedList(head: heade)
+        var isCir:Bool = list.detectionLoop(head: heade)
         
+        var nd = list.deleteNodeBackwards(head: head, backwardsIndex: 7)
         
         return true
     }
