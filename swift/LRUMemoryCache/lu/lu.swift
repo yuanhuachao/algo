@@ -8,10 +8,12 @@
 
 import Foundation
 
+var lock: pthread_mutex_t = pthread_mutex_t()
+
 private struct Map {
-    var dic: Dictionary<String, LinkedMapNode>?
-    var head: LinkedMapNode?
-    var tail: LinkedMapNode?
+    var dic: Dictionary<String, LinkedMapNode>? = Dictionary()
+    weak var head: LinkedMapNode?
+    weak var tail: LinkedMapNode?
     var totalCount: UInt = 0
     var totalCost: UInt = 0
     
@@ -25,7 +27,6 @@ private struct Map {
         
         node?.nextNode = head
         head?.preNode = node
-        
     }
     
     fileprivate func bringNodeToHead(node: LinkedMapNode) {
@@ -55,12 +56,33 @@ private struct Map {
         return tail
     }
     
-    fileprivate func removeAll() {
-        
+    fileprivate mutating func removeAll() {
+        dic?.removeAll()
+        totalCost = 0
+        head = nil
+        tail = nil
     }
     
-    fileprivate func removeNode(key: String) {
+    fileprivate mutating func removeNode(key: String) {
+        let node = dic?[key]
         
+        guard let _ = node else {
+            return
+        }
+        
+        if (ObjectIdentifier(node!) == ObjectIdentifier(head!)) {
+            head?.nextNode?.preNode = nil
+            head = head?.nextNode
+        } else if (ObjectIdentifier(node!) == ObjectIdentifier(tail!)) {
+            tail?.preNode?.nextNode = nil
+            tail = tail?.preNode
+        } else {
+            node?.preNode?.nextNode = node?.nextNode
+            node?.nextNode?.preNode = node?.preNode
+        }
+        
+        dic?.removeValue(forKey: key)
+        totalCost -= node!.cost
     }
     
 }
@@ -77,19 +99,15 @@ final class LinkedMapNode {
     
     init (key:String, value: Any) {
         self.value = value
+        self.key = key
     }
 }
 
 
-class lc {
+class LRUCache {
     
-    
-    
-    
-    var lock: pthread_mutex_t
     fileprivate var map: Map?
     var limitedCost: UInt = 0
-    
     
     func setObject(object: Any?, key: String, cost: UInt = 0) {
         
@@ -111,7 +129,7 @@ class lc {
             map?.bringNodeToHead(node: node!)
         } else {
             map?.totalCost += cost
-            let node = LinkedMapNode(value: object!)
+            let node = LinkedMapNode(key: key, value: object!)
             node.cost = cost
             node.time = time
             map?.insertNodeToHead(node: node)
@@ -169,43 +187,6 @@ class lc {
         
         pthread_mutex_unlock(&lock)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }
 
