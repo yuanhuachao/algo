@@ -151,9 +151,11 @@ class LRUCache {
             map?.bringNodeToHead(node: node!)
         }
         
+        pthread_mutex_unlock(&lock)
+        
         return node?.value
         
-        pthread_mutex_unlock(&lock)
+        
     }
     
     fileprivate func cleanMemory(costToClean: UInt) ->Bool {
